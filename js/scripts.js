@@ -12,3 +12,12 @@ let pokemonList = [
        height: 4,
        type:'Electric'}
 ]
+console.log(pokemonList);
+
+for(let i= 0; i < pokemonList.length; i++){
+    const pokemon= pokemonList[i];
+    console.log(` "${pokemon.name} (height:${pokemon.height})" `);
+    if(pokemon.height > 4){
+        console.log("-Wow, that's big!")
+    }
+} 
