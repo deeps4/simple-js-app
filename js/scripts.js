@@ -33,11 +33,5 @@ pokemonRepository.add({name: 'Balbasaur',
  })
 
  pokemonRepository.getAll().forEach(function(pokemon){
-    document.write(  pokemon.name +' height: ' + pokemon.height);
-    if(pokemon.height< 4){
-        document.write('<br>')
-    }
-    if(pokemon.height > 4){
-        document.write(" -Wow ,that's big! <br> ");
-    }
+   
 });
