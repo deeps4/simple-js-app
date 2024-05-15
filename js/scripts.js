@@ -1,22 +1,12 @@
 
 const pokemonRepository = (function(){
-    const pokemonList = [
-        {name: 'Charmander',
-         height: 6,
-         type: 'Fire' },
-        {name: 'Wartortle',
-         height: 1,
-         type:'Water'},
-        {name: 'Rattata',
-         height: 3,
-         type:'Normal'},
-        {name:'Pikachu',
-         height: 4,
-         type:'Electric'}, 
-  ]
+    const pokemonList = [];
+    const apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=10';
+
 
   function showDetails(pokemon){
     console.log(pokemon);
+
  }
  function handleButtonClick(button, pokemon){
     button.addEventListener('click', function(){
@@ -35,6 +25,42 @@ const pokemonRepository = (function(){
 
     handleButtonClick(button, pokemon);
  }
+
+ function loadList(){
+    return fetch(apiUrl).then(function(response){
+        return response.json();
+    }).then(function(json){
+        return json.results.forEach(function(item){
+            let pokemon = {
+                name: item.name,
+                detailsUrl: item.url
+            };
+            addListItem(pokemon);
+        
+        });
+    }).catch(function(e){
+        console.error(e);
+    })
+ };
+
+ function loadDetails(item){
+    let url = item.detailsUrl;
+    return fetch(url).then(function(response){
+        return response.json();
+    }).then(function(details){
+        item.imgUrl = details.sprites.front_default;
+        item.height = details.height;
+        item.types = details.types;
+    }).catch(function(e){
+        console.error(e);
+    });
+ };
+
+//  function showDetails(item){
+//     pokemonRepository.loadDetails(item).then(function(){
+//         console.log(item);
+//     });
+//  };
   
     return {
         getAll: function(){
@@ -44,16 +70,21 @@ const pokemonRepository = (function(){
         add: function(pokemon){
             pokemonList.push(pokemon)
         },
-        addListItem: addListItem
-    }
+        addListItem: addListItem,
+        loadList: loadList,
+        loadDetails: loadDetails,
+        showDetails: showDetails
+    };
 
-})()
+})();
 
 pokemonRepository.add({name: 'Balbasaur',
  height:3,
  type: 'Electric'
- })
+ });
 
- pokemonRepository.getAll().forEach(function(pokemon){
-   pokemonRepository.addListItem(pokemon);
+pokemonRepository.loadList().then(function(){
+   pokemonRepository.getAll().forEach(function(pokemon){
+     pokemonRepository.addListItem(pokemon);
+   });
 });
