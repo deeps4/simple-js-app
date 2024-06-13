@@ -1,52 +1,51 @@
 
-
-const pokemonRepository = (function(){
+addEventListener('load', () => {
+  const pokemonRepository = (function(){
     const pokemonList = [];
     const apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=80';
 
     function showModal(title, text, imageUrl) {
-        let modalContainer = document.querySelector('#modal-container');
-        modalContainer.innerHTML = '';
-        let modal = document.createElement('div');
-        modal.classList.add('modal');
-
+        let modalContainer = document.querySelector('.modal');
+       
         // Add the new modal content
-  let closeButtonElement = document.createElement('button');
-  closeButtonElement.classList.add('modal-close');
-  closeButtonElement.innerText = 'Close';
-  closeButtonElement.addEventListener('click', hideModal);
+        let closeButtonElement = document.querySelector('.close');
+        closeButtonElement.addEventListener('click', hideModal);
 
-  let titleElement = document.createElement('h1');
-  titleElement.innerText = title;
+        let titleElement = document.querySelector('.modal-title');
+        titleElement.innerText = title;
 
-  let contentElement = document.createElement('p');
-  contentElement.innerText = text;
 
-  let pokemonImage = document.createElement('img');
-  pokemonImage.classList.add('pokemon-img');
-  pokemonImage.src = imageUrl;
+        const modalBody = document.querySelector('.modal-body');
+        modalBody.innerHTML = '';
 
-  modal.appendChild(closeButtonElement);
-  modal.appendChild(titleElement);
-  modal.appendChild(contentElement);
-  modal.appendChild(pokemonImage);
-  modalContainer.appendChild(modal);
+        let contentElement = document.createElement('p');
+        contentElement.innerText = text;
 
-        modalContainer.classList.add('is-visible');
-      }
+        let pokemonImage = document.createElement('img');
+        pokemonImage.classList.add('pokemon-img');
+        pokemonImage.src = imageUrl;
+
+
+       
+        modalBody.appendChild(contentElement);
+        modalBody.appendChild(pokemonImage);
+       
+
+        modalContainer.classList.remove('fade');
+    }
 
       function hideModal() {
-        let modalContainer = document.querySelector('#modal-container');
+        let modalContainer = document.querySelector('.modal-dialog');
         modalContainer.classList.remove('is-visible');
       }
 
       window.addEventListener('keydown', (e) => {
-        let modalContainer = document.querySelector('#modal-container');
+        let modalContainer = document.querySelector('.modal-dialog');
         if (e.key === 'Escape' && modalContainer.classList.contains('is-visible')) {
           hideModal();  
         }
       });
-      let modalContainer = document.querySelector('#modal-container');
+      let modalContainer = document.querySelector('.modal-dialog');
       modalContainer.addEventListener('click', (e) => {
         // Since this is also triggered when clicking INSIDE the modal
         // We only want to close if the user clicks directly on the overlay
@@ -57,9 +56,7 @@ const pokemonRepository = (function(){
       });
       
       
-    //   document.querySelector('#show-modal').addEventListener('click', () => {
-    //     showModal();
-    //   });
+    
       
   function showDetails(pokemon){
     console.log(pokemon);
@@ -81,11 +78,16 @@ const pokemonRepository = (function(){
  };
 
   function addListItem(pokemon){
-    let pokemonList = document.querySelector(".pokemon-list");
+    let pokemonList = document.querySelector(".list-group");
     let listItem = document.createElement("li");
+    listItem.classList.add("list-group-item");
     let button = document.createElement("button");
     button.innerText = pokemon.name;
-    button.classList.add("button-class");
+    button.classList.add(["btn","btn-primary"]);
+    button.dataset.target = "#exampleModal"
+    button.dataset.toggle = "modal"
+
+    
     listItem.appendChild(button);
     pokemonList.appendChild(listItem);
 
@@ -125,12 +127,6 @@ const pokemonRepository = (function(){
         console.error(e);
     });
  };
-
-
-// Load details will take 1 parameter -> detailsUrl
-// It will make an api call using fetch and resolve the json and return a promise.
-// When promise will be resolved it will provide 3 fields in an object -> {imgUrl, height, types}
-
   
     return {
         getAll: function(){
@@ -154,3 +150,4 @@ pokemonRepository.loadList().then(function(){
      pokemonRepository.addListItem(pokemon);
    });
 });
+})
