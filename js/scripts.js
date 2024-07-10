@@ -81,9 +81,9 @@ addEventListener('load', () => {
     };
 
     function addListItem(pokemon) {
-      let pokemonList = document.querySelector('.list-group');
+      let pokemonList = document.querySelector('#pokemon-list');
       let listItem = document.createElement("li");
-      listItem.classList.add("list-group-item");
+      listItem.classList.add("col-sm-4", "p-3", "text-center");
       let button = document.createElement("button");
       button.innerText = pokemon.name;
       button.classList.add(["btn", "btn-primary"]);
